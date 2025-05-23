@@ -1,5 +1,6 @@
 package com.example.helloandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.example.helloandroid.database.AppDatabase;
 import com.example.helloandroid.entities.City;
 import com.example.helloandroid.entities.User;
 import com.example.helloandroid.repositories.UserRepositorio;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -54,6 +56,12 @@ public class UserActivity extends AppCompatActivity {
         List<User> users = userRepository.getAll();
         userAdapter.setUsers(users);
 
+        FloatingActionButton button = findViewById(R.id.fabGoToColorForm);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FormUserActivity.class);
+            startActivityForResult(intent, 100);
+        });
+
         //Log.i("MAIN_APP UserActivity", new Gson().toJson(db.userDao().getAll()));
     }
 
@@ -66,5 +74,15 @@ public class UserActivity extends AppCompatActivity {
 //        AppDatabase.getInstance(this).cityDao().insert(city1);
 
         // Method to fill data if needed
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            List<User> users = userRepository.getAll();
+            userAdapter.setUsers(users);
+            userAdapter.notifyDataSetChanged();
+        }
     }
 }

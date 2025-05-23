@@ -20,5 +20,5 @@ public interface CityDao {
     public List<City> getByIds(List<Integer> ids);
 
     @Insert
-    public void insert(City city);
+    long insert(City city);
 }
